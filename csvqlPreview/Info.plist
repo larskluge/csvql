@@ -26,13 +26,16 @@
 		<string>com.apple.quicklook.preview</string>
 		<key>NSExtensionPrincipalClass</key>
 		<string>$(PRODUCT_MODULE_NAME).PreviewController</string>
+		<key>NSExtensionAttributes</key>
+		<dict>
+			<key>QLIsDataBasedPreview</key>
+			<false/>
+			<key>QLSupportedContentTypes</key>
+			<array>
+				<string>public.comma-separated-values-text</string>
+				<string>public.tab-separated-values-text</string>
+			</array>
+		</dict>
 	</dict>
-	<key>QLIsDataBasedPreview</key>
-	<false/>
-	<key>QLSupportedContentTypes</key>
-	<array>
-		<string>public.comma-separated-values-text</string>
-		<string>public.tab-separated-values-text</string>
-	</array>
 </dict>
 </plist>

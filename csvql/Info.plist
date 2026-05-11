@@ -32,12 +32,10 @@
 				<string>public.comma-separated-values-text</string>
 				<string>public.tab-separated-values-text</string>
 			</array>
+			<key>NSDocumentClass</key>
+			<string>csvql.DocumentController</string>
 		</dict>
 	</array>
-	<key>NSDocumentClass</key>
-	<string>csvql.DocumentController</string>
-	<key>NSMainStoryboardFile</key>
-	<string></string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
