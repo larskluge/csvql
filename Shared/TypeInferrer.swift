@@ -54,6 +54,19 @@ struct TypeInferrer {
         statusKeywords.contains(value.lowercased())
     }
 
+    static func valueMatchesType(_ value: String, type: ColumnType) -> Bool {
+        guard !value.isEmpty else { return false }
+        switch type {
+        case .bool: return isBool(value)
+        case .number: return matches(numberPattern, value)
+        case .date: return matches(datePattern, value)
+        case .link: return value.lowercased().hasPrefix("http://") || value.lowercased().hasPrefix("https://")
+        case .email: return matches(emailPattern, value)
+        case .sha: return matches(shaPattern, value.lowercased())
+        case .text: return true
+        }
+    }
+
     private static func isBool(_ value: String) -> Bool {
         let lower = value.lowercased()
         return lower == "true" || lower == "false"
