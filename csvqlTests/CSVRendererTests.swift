@@ -40,41 +40,35 @@ final class CSVRendererTests: XCTestCase {
 
     // MARK: - Titlebar
 
-    func testTitlebarShowsFilename() {
-        let html = CSVRenderer.render(data: sampleData(), interactive: false)
-        XCTAssertTrue(html.contains("test.csv"))
+    func testNoHtmlTitlebar() {
+        let staticHtml = CSVRenderer.render(data: sampleData(), interactive: false)
+        XCTAssertFalse(staticHtml.contains("class=\"titlebar\""))
+        let interactiveHtml = CSVRenderer.render(data: sampleData(), interactive: true)
+        XCTAssertFalse(interactiveHtml.contains("class=\"titlebar\""))
     }
 
-    func testTitlebarShowsRowCount() {
+    func testStaticHasNoSubToolbar() {
         let html = CSVRenderer.render(data: sampleData(), interactive: false)
-        XCTAssertTrue(html.contains("2 rows"))
+        XCTAssertFalse(html.contains("<div class=\"sub-toolbar\">"))
     }
 
-    func testTitlebarShowsColCount() {
-        let html = CSVRenderer.render(data: sampleData(), interactive: false)
-        XCTAssertTrue(html.contains("3 cols"))
-    }
+    // MARK: - Footer Pills
 
-    // MARK: - Sub-toolbar
-
-    func testSubToolbarShowsPath() {
+    func testFooterShowsDelimiterPill() {
         let html = CSVRenderer.render(data: sampleData(), interactive: false)
-        XCTAssertTrue(html.contains("test.csv"))
-    }
-
-    func testSubToolbarShowsDelimiterPill() {
-        let html = CSVRenderer.render(data: sampleData(), interactive: false)
+        XCTAssertTrue(html.contains("delimiter"))
         XCTAssertTrue(html.contains("Comma"))
     }
 
-    func testSubToolbarShowsEncodingPill() {
+    func testFooterShowsEncodingPill() {
         let html = CSVRenderer.render(data: sampleData(), interactive: false)
+        XCTAssertTrue(html.contains("encoding"))
         XCTAssertTrue(html.contains("UTF-8"))
     }
 
     // MARK: - Table Headers
 
-    func testTableHeadersLowercased() {
+    func testTableHeadersPreserveCase() {
         let html = CSVRenderer.render(data: sampleData(), interactive: false)
         XCTAssertTrue(html.contains(">name<"))
         XCTAssertTrue(html.contains(">amount<"))
@@ -174,7 +168,7 @@ final class CSVRendererTests: XCTestCase {
 
     func testFooterShowsLineEnding() {
         let html = CSVRenderer.render(data: sampleData(), interactive: false)
-        XCTAssertTrue(html.contains(">LF<"))
+        XCTAssertTrue(html.contains("LF"))
     }
 
     func testFooterShowsCsvqlBadge() {
@@ -205,14 +199,11 @@ final class CSVRendererTests: XCTestCase {
         XCTAssertFalse(html.contains("sortable\""))
     }
 
-    func testInteractiveHasCloseButton() {
-        let html = CSVRenderer.render(data: sampleData(), interactive: true)
-        XCTAssertTrue(html.contains("class=\"close-btn\""))
-    }
-
-    func testStaticHasNoCloseButton() {
-        let html = CSVRenderer.render(data: sampleData(), interactive: false)
-        XCTAssertFalse(html.contains("class=\"close-btn\""))
+    func testNoCloseButton() {
+        let staticHtml = CSVRenderer.render(data: sampleData(), interactive: false)
+        XCTAssertFalse(staticHtml.contains("close-btn"))
+        let interactiveHtml = CSVRenderer.render(data: sampleData(), interactive: true)
+        XCTAssertFalse(interactiveHtml.contains("close-btn"))
     }
 
     // MARK: - HTML Escaping
@@ -247,9 +238,6 @@ final class CSVRendererTests: XCTestCase {
         let url = Bundle(for: type(of: self)).url(forResource: "sales", withExtension: "csv")!
         let data = try! CSVData.load(from: url)
         let html = CSVRenderer.render(data: data, interactive: false)
-        XCTAssertTrue(html.contains("sales.csv"))
-        XCTAssertTrue(html.contains("8 rows"))
-        XCTAssertTrue(html.contains("6 cols"))
         XCTAssertTrue(html.contains("type-number"))
         XCTAssertTrue(html.contains("type-date"))
         XCTAssertTrue(html.contains("pill-true"))

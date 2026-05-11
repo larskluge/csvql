@@ -56,83 +56,26 @@ struct CSVRenderer {
     // MARK: - Titlebar
 
     private static func renderTitlebar(data: CSVData, interactive: Bool) -> String {
-        let leftContent: String
-        if interactive {
-            leftContent = """
-            <div class="titlebar-left">
-            <div class="close-btn" onclick="window.webkit.messageHandlers.csvql.postMessage({action:'close'})">
-            <svg viewBox="0 0 9 9"><line x1="1" y1="1" x2="8" y2="8"/><line x1="8" y1="1" x2="1" y2="8"/></svg>
-            </div>
-            </div>
-            """
-        } else {
-            leftContent = "<div class=\"titlebar-left\"></div>"
-        }
-
-        return """
-        <div class="titlebar">
-        \(leftContent)
-        <div class="titlebar-center">
-        <div class="filename">\(escapeHTML(data.fileName))</div>
-        <div class="meta">\(data.rows.count) rows<span class="sep"> \u{00b7} </span>\(data.headers.count) cols<span class="sep"> \u{00b7} </span>\(data.formattedSize)</div>
-        </div>
-        <div class="titlebar-right"></div>
-        </div>
-        """
+        return ""
     }
 
     // MARK: - Sub-toolbar
 
     private static func renderSubToolbar(data: CSVData, interactive: Bool) -> String {
-        let pathParts = formatBreadcrumb(data.filePath)
-        let delimiterName = DelimiterDetector.name(for: data.delimiter)
-
-        let searchBox: String
-        if interactive {
-            searchBox = """
-            <div class="search-box">
-            <svg viewBox="0 0 11 11"><circle cx="4.5" cy="4.5" r="3.5" fill="none" stroke-width="1.2"/><line x1="7" y1="7" x2="10" y2="10" stroke-width="1.2"/></svg>
-            <input type="text" placeholder="Filter rows..." oninput="filterRows(this.value)">
-            <span class="match-count" id="match-count"></span>
-            </div>
-            """
-        } else {
-            searchBox = ""
-        }
+        if !interactive { return "" }
 
         return """
         <div class="sub-toolbar">
-        <div class="breadcrumb">\(pathParts)</div>
+        <div></div>
         <div class="toolbar-pills">
-        <div class="pill"><span class="label">delimiter </span><span class="value">\(delimiterName)</span></div>
-        <div class="pill"><span class="label">encoding </span><span class="value">\(data.encoding)</span></div>
-        \(searchBox)
+        <div class="search-box">
+        <svg viewBox="0 0 11 11"><circle cx="4.5" cy="4.5" r="3.5" fill="none" stroke-width="1.2"/><line x1="7" y1="7" x2="10" y2="10" stroke-width="1.2"/></svg>
+        <input type="text" placeholder="Filter rows..." oninput="filterRows(this.value)">
+        <span class="match-count" id="match-count"></span>
+        </div>
         </div>
         </div>
         """
-    }
-
-    private static func formatBreadcrumb(_ path: String) -> String {
-        let homePath = NSHomeDirectory()
-        var displayPath = path
-        if displayPath.hasPrefix(homePath) {
-            displayPath = "~" + displayPath.dropFirst(homePath.count)
-        }
-        let parts = displayPath.split(separator: "/", omittingEmptySubsequences: true)
-        guard !parts.isEmpty else { return escapeHTML(displayPath) }
-
-        var result = ""
-        for (i, part) in parts.enumerated() {
-            if i > 0 {
-                result += "<span class=\"slash\">/</span>"
-            }
-            if i == parts.count - 1 {
-                result += "<span class=\"segment-last\">\(escapeHTML(String(part)))</span>"
-            } else {
-                result += escapeHTML(String(part))
-            }
-        }
-        return result
     }
 
     // MARK: - Table
@@ -145,7 +88,7 @@ struct CSVRenderer {
             let sortClass = interactive ? " sortable" : ""
             let sortAttr = interactive ? " onclick=\"sortColumn(\(i))\"" : ""
             let typeClass = i < data.types.count ? columnWidthClass(data.types[i]) : ""
-            html += "<th class=\"\(typeClass)\(sortClass)\"\(sortAttr)>\(escapeHTML(header.lowercased()))</th>"
+            html += "<th class=\"\(typeClass)\(sortClass)\"\(sortAttr)>\(escapeHTML(header))</th>"
         }
         html += "</tr></thead><tbody>"
 
@@ -258,6 +201,8 @@ struct CSVRenderer {
     // MARK: - Footer
 
     private static func renderFooter(data: CSVData) -> String {
+        let delimiterName = DelimiterDetector.name(for: data.delimiter)
+
         return """
         <div class="footer">
         <div class="footer-left">
@@ -267,8 +212,9 @@ struct CSVRenderer {
         <span><span class="label">modified </span><span class="value">\(data.timeAgo)</span></span>
         </div>
         <div class="footer-right">
-        <span class="value">\(data.lineEnding)</span>
-        <span class="value">\(data.encoding)</span>
+        <div class="pill"><span class="label">\(data.lineEnding) </span></div>
+        <div class="pill"><span class="label">delimiter </span><span class="value">\(delimiterName)</span></div>
+        <div class="pill"><span class="label">encoding </span><span class="value">\(data.encoding)</span></div>
         <span class="csvql-badge"><span class="csvql-dot"></span><span class="value">csvql</span></span>
         </div>
         </div>

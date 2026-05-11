@@ -19,10 +19,10 @@ final class DocumentWindowController: NSWindowController, WKScriptMessageHandler
             backing: .buffered,
             defer: false
         )
-        window.titleVisibility = .hidden
-        window.titlebarAppearsTransparent = true
+        window.titleVisibility = .visible
         window.isReleasedWhenClosed = false
         window.backgroundColor = NSColor(red: 0.102, green: 0.102, blue: 0.102, alpha: 1.0)
+        window.appearance = NSAppearance(named: .darkAqua)
 
         self.init(window: window)
         self.webView = webView
@@ -56,6 +56,8 @@ final class DocumentWindowController: NSWindowController, WKScriptMessageHandler
             webView.loadHTMLString(html, baseURL: nil)
             loadedURL = url
             window?.title = url.lastPathComponent
+            window?.representedURL = url
+            window?.subtitle = "\(data.rows.count) rows \u{00b7} \(data.headers.count) cols \u{00b7} \(data.formattedSize)"
         } catch {
             let alert = NSAlert(error: error)
             alert.runModal()
@@ -63,12 +65,6 @@ final class DocumentWindowController: NSWindowController, WKScriptMessageHandler
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard let body = message.body as? [String: Any],
-              let action = body["action"] as? String else { return }
-
-        if action == "close" {
-            window?.performClose(nil)
-        }
     }
 
     // MARK: - Density
