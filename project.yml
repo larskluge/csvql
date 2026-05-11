@@ -1,0 +1,86 @@
+name: csvql
+options:
+  bundleIdPrefix: com.csvql
+  deploymentTarget:
+    macOS: "12.0"
+  xcodeVersion: "15.0"
+  minimumXcodeGenVersion: "2.38"
+
+targets:
+  csvql:
+    type: application
+    platform: macOS
+    sources:
+      - path: csvql
+      - path: Shared
+        excludes:
+          - "Resources/**"
+    resources:
+      - path: Shared/Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.csvql.app
+        INFOPLIST_FILE: csvql/Info.plist
+        CODE_SIGN_ENTITLEMENTS: csvql/csvql.entitlements
+        MACOSX_DEPLOYMENT_TARGET: "12.0"
+        PRODUCT_NAME: csvql
+        GENERATE_INFOPLIST_FILE: false
+    dependencies:
+      - target: csvqlPreview
+        embed: true
+        codeSign: true
+
+  csvqlPreview:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: csvqlPreview
+      - path: Shared
+        excludes:
+          - "Resources/**"
+    resources:
+      - path: Shared/Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.csvql.app.preview
+        INFOPLIST_FILE: csvqlPreview/Info.plist
+        CODE_SIGN_ENTITLEMENTS: csvqlPreview/csvqlPreview.entitlements
+        MACOSX_DEPLOYMENT_TARGET: "12.0"
+        PRODUCT_NAME: csvqlPreview
+        GENERATE_INFOPLIST_FILE: false
+
+  csvqlTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: csvqlTests
+      - path: Shared
+        excludes:
+          - "Resources/**"
+    resources:
+      - path: Shared/Resources
+      - path: csvqlTests/Fixtures
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.csvql.app.tests
+        MACOSX_DEPLOYMENT_TARGET: "12.0"
+        GENERATE_INFOPLIST_FILE: true
+    dependencies:
+      - target: csvql
+        embed: false
+
+  csvql-screenshot:
+    type: tool
+    platform: macOS
+    sources:
+      - path: csvql-screenshot
+      - path: Shared
+        excludes:
+          - "Resources/**"
+    resources:
+      - path: Shared/Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.csvql.app.screenshot
+        MACOSX_DEPLOYMENT_TARGET: "12.0"
+        GENERATE_INFOPLIST_FILE: true
