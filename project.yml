@@ -15,8 +15,8 @@ targets:
       - path: Shared
         excludes:
           - "Resources/**"
-    resources:
       - path: Shared/Resources
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.csvql.app
@@ -38,8 +38,8 @@ targets:
       - path: Shared
         excludes:
           - "Resources/**"
-    resources:
       - path: Shared/Resources
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.csvql.app.preview
@@ -57,9 +57,10 @@ targets:
       - path: Shared
         excludes:
           - "Resources/**"
-    resources:
       - path: Shared/Resources
+        buildPhase: resources
       - path: csvqlTests/Fixtures
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.csvql.app.tests
@@ -77,8 +78,8 @@ targets:
       - path: Shared
         excludes:
           - "Resources/**"
-    resources:
       - path: Shared/Resources
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.csvql.app.screenshot
