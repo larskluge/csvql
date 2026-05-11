@@ -1,0 +1,7 @@
+sha,service,environment,status,deployer,deployed_at
+a1b2c3d,api-gateway,production,success,deploy-bot@example.com,2025-10-20T09:15:00Z
+e4f5g6h,auth-service,staging,success,ops-team@example.com,2025-10-20T09:18:00Z
+i7j8k9l,web-frontend,preview,failed,ci-runner@example.com,2025-10-20T09:22:00Z
+m0n1o2p,api-gateway,production,success,deploy-bot@example.com,2025-10-20T10:05:00Z
+q3r4s5t,data-pipeline,staging,failed,ops-team@example.com,2025-10-20T10:30:00Z
+u6v7w8x,auth-service,production,success,deploy-bot@example.com,2025-10-20T11:00:00Z

@@ -1,0 +1,9 @@
+order_id,customer,amount,date,shipped,tracking_url
+ORD-1001,Acme Corp,2499.99,2025-10-03,true,https://track.example.com/abc123
+ORD-1002,Globex Inc,849.50,2025-10-05,false,
+ORD-1003,Initech LLC,12750.00,2025-10-07,true,https://track.example.com/def456
+ORD-1004,Umbrella Co,399.00,2025-10-12T14:30:00Z,true,https://track.example.com/ghi789
+ORD-1005,Stark Industries,5200.00,2025-10-15,false,
+ORD-1006,Wayne Enterprises,18900.00,2025-10-18,true,https://track.example.com/jkl012
+ORD-1007,Wonka Industries,675.25,2025-10-22,true,https://track.example.com/mno345
+ORD-1008,Cyberdyne Systems,3100.00,2025-10-25,false,
