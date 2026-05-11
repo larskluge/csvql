@@ -46,11 +46,15 @@ struct CSVRenderer {
 
     private static func loadCSS() -> String {
         let bundle = Bundle(for: BundleAnchor.self)
-        guard let url = bundle.url(forResource: "preview", withExtension: "css"),
-              let css = try? String(contentsOf: url, encoding: .utf8) else {
-            return ""
+        if let url = bundle.url(forResource: "preview", withExtension: "css"),
+           let css = try? String(contentsOf: url, encoding: .utf8) {
+            return css
         }
-        return css
+        let execDir = Bundle.main.executableURL?.deletingLastPathComponent().path ?? "."
+        if let css = try? String(contentsOfFile: execDir + "/preview.css", encoding: .utf8) {
+            return css
+        }
+        return ""
     }
 
     // MARK: - Titlebar

@@ -85,3 +85,6 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.csvql.app.screenshot
         MACOSX_DEPLOYMENT_TARGET: "12.0"
         GENERATE_INFOPLIST_FILE: true
+    postBuildScripts:
+      - script: cp "${SRCROOT}/Shared/Resources/preview.css" "${BUILT_PRODUCTS_DIR}/preview.css"
+        name: Copy CSS for tool
